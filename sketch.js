@@ -1,10 +1,6 @@
-// Project Title
-// Your Name
-// Date
-//
-// Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+//Fishing Game
 
+let cast;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -12,6 +8,9 @@ function setup() {
 
 function draw() {
   background(220);
+  casting();
+}
 
-  circle(mouseX, mouseY, 100);
+function casting(){
+  line(width/2, height/2, mouseX, mouseY);
 }
