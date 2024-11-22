@@ -2,6 +2,10 @@
 
 let cast;
 
+function preload() {
+  rodStateOne = loadImage("Rod.jpg");
+}
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
 }
@@ -11,6 +15,12 @@ function draw() {
   casting();
 }
 
+function castingState() {
+  // Casting state will be able to look at a certain distance from left to right 
+  // translate() shifting what the origin is
+}
+
 function casting(){
-  line(width/2, height/2, mouseX, mouseY);
+  imageMode(CENTER);
+  image(rodStateOne, mouseX, mouseY, 100, 100);
 }
