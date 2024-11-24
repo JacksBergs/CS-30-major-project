@@ -1,6 +1,7 @@
 //Fishing Game
 
 let cast;
+let rodStateOne;
 
 function preload() {
   rodStateOne = loadImage("Rod.jpg");
