@@ -1,10 +1,14 @@
 //Fishing Game
 
 let cast;
-let rodStateOne;
+let rodStateNormal;
+let rodStateFishing;
+let rodStateHooked;
+let rodStateCaught;
+let rodStateLost;
 
 function preload() {
-  rodStateOne = loadImage("Rod.jpg");
+  rodStateNormal = loadImage("Rod.jpg");
 }
 
 function setup() {
