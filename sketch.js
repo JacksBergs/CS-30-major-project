@@ -1,4 +1,9 @@
 //Fishing Game
+// Maybe make a new canvas
+// https://p5js.org/reference/p5/textFont/
+// Have to click in between a certain area
+
+let startClick = false;
 
 let cast;
 let rodStateNormal;
@@ -8,7 +13,8 @@ let rodStateCaught;
 let rodStateLost;
 
 function preload() {
-  rodStateNormal = loadImage("Rod.jpg");
+  // When the rod is neutral
+  rodStateNormal = loadImage("Rod.png");
 }
 
 function setup() {
@@ -16,16 +22,32 @@ function setup() {
 }
 
 function draw() {
-  background(220);
-  casting();
+  beginningScreen();
+  if (startClick === true) {
+    background(220);
+    showRod();
+  }
 }
 
-function castingState() {
-  // Casting state will be able to look at a certain distance from left to right 
-  // translate() shifting what the origin is
+function beginningScreen() {
+  textAlign(CENTER);
+  fill("black");
+  text("This is the start of the game", width/2 - 50, height/2);
 }
 
-function casting(){
+function mousePressed() {
+  if (mouseX >= 0 && mouseX <= 10000){
+    startClick = true;
+  }
+}
+
+
+// function castingState() {
+//   // Casting state will be able to look at a certain distance from left to right 
+//   // translate() shifting what the origin is meaning I can shift where my character goes
+// }
+
+function showRod(){
   imageMode(CENTER);
-  image(rodStateOne, mouseX, mouseY, 100, 100);
+  image(rodStateNormal, mouseX + 45, mouseY - 35, 100, 100);
 }
