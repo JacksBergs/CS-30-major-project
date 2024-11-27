@@ -30,6 +30,7 @@ function draw() {
 }
 
 function beginningScreen() {
+  background(220);
   textAlign(CENTER);
   fill("black");
   text("This is the start of the game", width/2 - 50, height/2);
@@ -40,6 +41,7 @@ function mousePressed() {
     startClick = true;
   }
 }
+
 
 
 // function castingState() {
