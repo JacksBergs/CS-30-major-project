@@ -2,6 +2,8 @@
 // Maybe make a new canvas
 // https://p5js.org/reference/p5/textFont/
 // Have to click in between a certain area
+// Rectangle changes colour when you hover over it
+// If hide cursor equals true, put cursor at the top right
 
 let startClick = false;
 
@@ -30,18 +32,25 @@ function draw() {
 }
 
 function beginningScreen() {
+  let rectX = width/2 - 250;
+  let rectY = height/2 - 100;
   background(220);
   textAlign(CENTER);
+  fill("red");
+  rect(rectX, rectY, 400, 200);
   fill("black");
   text("This is the start of the game", width/2 - 50, height/2);
 }
 
 function mousePressed() {
-  if (mouseX >= 0 && mouseX <= 10000){
+  if (mouseX >= rectX && mouseY >= rectY){
     startClick = true;
   }
 }
 
+function mouseDragged(){
+
+}
 
 
 // function castingState() {
@@ -50,6 +59,9 @@ function mousePressed() {
 // }
 
 function showRod(){
+  noCursor();
+  let pmx = pmouseX + 46;
+  let pmy = pmouseY - 38;
   imageMode(CENTER);
-  image(rodStateNormal, mouseX + 45, mouseY - 35, 100, 100);
+  image(rodStateNormal, pmx, pmy, 100, 100);
 }
