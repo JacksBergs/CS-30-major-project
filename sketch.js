@@ -36,15 +36,15 @@ function draw() {
   background(220);
   drawGui();
   if (startClick === true) {
-    beginningScreen();
+    worldOne();
     showRod();
   }
 }
 
-function beginningScreen() {
+function worldOne() {
   background(220);
   fill("blue");
-  rect(width/3, height/3, 0, width);
+  rect(0, height/1.5, width, height);
 }
 
 function mousePressed() {
