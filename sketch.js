@@ -4,6 +4,9 @@
 // Have to click in between a certain area
 // Rectangle changes colour when you hover over it
 // If hide cursor equals true, put cursor at the top right
+// p5.touchgui
+
+let gui;
 
 let startClick = false;
 
@@ -13,6 +16,10 @@ let rodStateFishing;
 let rodStateHooked;
 let rodStateCaught;
 let rodStateLost;
+let rectX;
+let rectY;
+let rectW;
+let rectH;
 
 function preload() {
   // When the rod is neutral
@@ -21,35 +28,34 @@ function preload() {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  gui = createGui();
+  b = createButton("Start the game", width/2 - 250, height/2 - 105, 400, 200);
 }
 
 function draw() {
-  beginningScreen();
+  background(220);
+  drawGui();
   if (startClick === true) {
-    background(220);
+    beginningScreen();
     showRod();
   }
 }
 
 function beginningScreen() {
-  let rectX = width/2 - 250;
-  let rectY = height/2 - 100;
   background(220);
-  textAlign(CENTER);
-  fill("red");
-  rect(rectX, rectY, 400, 200);
-  fill("black");
-  text("This is the start of the game", width/2 - 50, height/2);
+  fill("blue");
+  rect(width/3, height/3, 0, width);
 }
 
 function mousePressed() {
-  if (mouseX >= rectX && mouseY >= rectY){
+  if (mouseX > 200 && mouseX < 6000){
     startClick = true;
   }
-}
-
-function mouseDragged(){
-
+  if (mouseY >= 284 && mouseY <= 290){
+    startClick = true;
+  }
+  console.log(mouseX);
+  console.log(mouseY);
 }
 
 
