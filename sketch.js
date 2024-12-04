@@ -5,6 +5,7 @@
 // Rectangle changes colour when you hover over it
 // If hide cursor equals true, put cursor at the top right
 // p5.touchgui
+// mouseButton
 
 const BAR_CHARGE = 5;
 
@@ -52,7 +53,7 @@ function worldOne() {
 }
 
 function mousePressed() {
-  if (mouseX > 200 && mouseX < width/2 + 150){
+  if (mouseX > width/2 - 250 && mouseX < width/2 + 150){
     startClick = true;
   }
   if (mouseY >= 284 && mouseY <= 290){
@@ -83,11 +84,22 @@ function fishingBar() {
 // }
 
 function showRod(){
-  noCursor();
+  //noCursor();
   let pmx = pmouseX + 46;
   let pmy = pmouseY - 38;
   if (pmy < 480){
     imageMode(CENTER);
     image(rodStateNormal, pmx, pmy, 100, 100);
+  }
+  else if (pmy > 480){
+    pmx = pmouseX + 46;
+    pmy = pmouseY; 
+    let bar = 0;
+    for (let i = 0; i < 500; i++){
+      if (i > bar) {
+        bar ++;
+      }
+    }
+    image(rodStateNormal, pmx, pmy - bar, 100, 100);
   }
 }
