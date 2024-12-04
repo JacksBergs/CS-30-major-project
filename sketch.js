@@ -11,7 +11,10 @@ const BAR_CHARGE = 5;
 
 let gui;
 
+let barPower = 0;
+
 let startClick = false;
+let castHold = false;
 
 let cast;
 let rodStateNormal;
@@ -34,7 +37,7 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   gui = createGui();
-  b = createButton("Start the game", width/2 - 250, height/2 - 105, 400, 200);
+  startButton = createButton("Start the game", width/2 - 250, height/2 - 105, 400, 200);
 }
 
 function draw() {
@@ -43,6 +46,8 @@ function draw() {
   if (startClick === true) {
     worldOne();
     showRod();
+    fishingBar();
+    console.log(barPower);
   }
 }
 
@@ -63,19 +68,22 @@ function mousePressed() {
   console.log(mouseY);
 }
 
-function fishingBar() {
-  if (startClick === true) {
-    if (mousePressed()){
-      bar++;
-      if (frameCount % 60 === 0){
-        fill("red");
-        square(100, 100, 100, 100);
-        console.log(bar);
-      }
-    }
-  }
+function mouseReleased() {
+
 }
 
+function fishingBar() {
+  // mouseisPressed keeps going unless if it equals false
+  if (mouseIsPressed) {
+    // Framecount makes it charge the bar past the frame amount 
+    if (frameCount % 3 === 0) {
+      barPower++;
+    }
+  }
+  else {
+    barPower = 0;
+  }
+}
 
 
 // function castingState() {
@@ -84,22 +92,15 @@ function fishingBar() {
 // }
 
 function showRod(){
-  //noCursor();
+  noCursor();
   let pmx = pmouseX + 46;
   let pmy = pmouseY - 38;
   if (pmy < 480){
     imageMode(CENTER);
     image(rodStateNormal, pmx, pmy, 100, 100);
   }
+  
   else if (pmy > 480){
-    pmx = pmouseX + 46;
-    pmy = pmouseY; 
-    let bar = 0;
-    for (let i = 0; i < 500; i++){
-      if (i > bar) {
-        bar ++;
-      }
-    }
-    image(rodStateNormal, pmx, pmy - bar, 100, 100);
   }
+
 }
