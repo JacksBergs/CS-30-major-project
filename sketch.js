@@ -75,6 +75,7 @@ function mouseReleased() {
 function fishingBar() {
   // mouseisPressed keeps going unless if it equals false
   if (mouseIsPressed) {
+    barSquareCharge();
     // Framecount makes it charge the bar past the frame amount 
     if (frameCount % 3 === 0) {
       barPower++;
@@ -85,6 +86,12 @@ function fishingBar() {
   }
 }
 
+function barSquareCharge() {
+
+  fill("red");
+  square(450, 60, 40);
+
+}
 
 // function castingState() {
 //   // Casting state will be able to look at a certain distance from left to right 
@@ -98,9 +105,14 @@ function showRod(){
   if (pmy < 480){
     imageMode(CENTER);
     image(rodStateNormal, pmx, pmy, 100, 100);
+    fill("black");
+    // make horizontal bar
+    rect(pmx - 80, pmy + 20, 20, 30);
   }
   
-  else if (pmy > 480){
+  else { 
+    // Rests the rod on the water 
+    image(rodStateNormal, pmx, pmy-(pmy - 480), 100, 100);
+    rect(pmx - 80, pmy + 20, 20, 30);
   }
-
 }
