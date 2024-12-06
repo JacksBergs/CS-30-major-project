@@ -12,6 +12,7 @@ const BAR_CHARGE = 5;
 let gui;
 
 let barPower = 0;
+let squareShow = 0;
 
 let startClick = false;
 let castHold = false;
@@ -77,7 +78,7 @@ function fishingBar() {
   if (mouseIsPressed) {
     barSquareCharge();
     // Framecount makes it charge the bar past the frame amount 
-    if (frameCount % 3 === 0) {
+    if (frameCount % 1 === 0) {
       barPower++;
     }
   }
@@ -87,10 +88,35 @@ function fishingBar() {
 }
 
 function barSquareCharge() {
-
-  fill("red");
-  square(450, 60, 40);
-
+  if (barPower > squareShow && squareShow < 30) {
+    fill("red");
+    square(80, 80, 40);
+    squareShow++;
+  }
+  else if (barPower > squareShow & squareShow < 60){
+    fill("orange");
+    square(120, 120, 40);
+    squareShow++;
+  }
+  else if (barPower > squareShow & squareShow < 90){
+    fill("yellow");
+    square(160, 160, 40);
+    squareShow++;
+  }
+  else if (barPower > squareShow & squareShow < 120){
+    fill("green");
+    square(200, 200, 40);
+    squareShow++;
+  }
+  else if (barPower > squareShow & squareShow < 140){
+    fill("black");
+    square(400, 400, 40);
+    squareShow++;
+  }
+  else if (barPower > squareShow & squareShow < 141){
+    squareShow = 0;
+  }
+  console.log(squareShow);
 }
 
 // function castingState() {
