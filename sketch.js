@@ -7,7 +7,9 @@
 // p5.touchgui
 // mouseButton
 
-const BAR_CHARGE = 5;
+const BAR_SQUARE_CHARGE = 5;
+
+let barCharge = 5;
 
 let gui;
 
@@ -29,6 +31,7 @@ let rectW;
 let rectH;
 
 let bar = 0;
+let inSweetSpot = false;
 
 function preload() {
   // When the rod is neutral
@@ -54,8 +57,6 @@ function draw() {
 
 function worldOne() {
   background(220);
-  fill(75, 175, 250);
-  rect(0, height/1.5, width, height);
 }
 
 function mousePressed() {
@@ -84,39 +85,49 @@ function fishingBar() {
   }
   else {
     barPower = 0;
+    squareShow = 0;
   }
 }
 
 function barSquareCharge() {
+  let powerColour;
   if (barPower > squareShow && squareShow < 30) {
-    fill("red");
+    inSweetSpot = false;
+    powerColour = fill("red");
     square(80, 80, 40);
     squareShow++;
   }
-  else if (barPower > squareShow & squareShow < 60){
-    fill("orange");
+  else if (barPower > squareShow && squareShow < 60){
+    inSweetSpot = false;
+    powerColour = fill("orange");
     square(120, 120, 40);
     squareShow++;
   }
-  else if (barPower > squareShow & squareShow < 90){
-    fill("yellow");
+  else if (barPower > squareShow && squareShow < 90){
+    inSweetSpot = false;
+    powerColour = fill("yellow");
     square(160, 160, 40);
     squareShow++;
   }
-  else if (barPower > squareShow & squareShow < 120){
-    fill("green");
+  else if (barPower > squareShow && squareShow < 120){
+    inSweetSpot = false;
+    powerColour = fill("green");
     square(200, 200, 40);
     squareShow++;
   }
-  else if (barPower > squareShow & squareShow < 140){
-    fill("black");
+  else if (barPower > squareShow && squareShow < 140){
+    // inSweetSpot === true we will make a noise, and you will get a perfect cast
+    inSweetSpot = true;
+    powerColour = fill("black");
     square(400, 400, 40);
     squareShow++;
   }
-  else if (barPower > squareShow & squareShow < 141){
+  else{
+    inSweetSpot = false;
     squareShow = 0;
   }
   console.log(squareShow);
+  console.log(inSweetSpot);
 }
 
 // function castingState() {
@@ -128,6 +139,8 @@ function showRod(){
   noCursor();
   let pmx = pmouseX + 46;
   let pmy = pmouseY - 38;
+  fill(75, 175, 250);
+  rect(0, height/1.5, width, height);
   if (pmy < 480){
     imageMode(CENTER);
     image(rodStateNormal, pmx, pmy, 100, 100);
