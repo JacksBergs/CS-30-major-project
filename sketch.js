@@ -7,6 +7,8 @@
 // p5.touchgui
 // mouseButton
 
+//Code is lagging for some unknown reason
+
 const BAR_SQUARE_CHARGE = 5;
 
 let barCharge = 5;
@@ -51,12 +53,13 @@ function draw() {
     worldOne();
     showRod();
     fishingBar();
-    console.log(barPower);
   }
 }
 
 function worldOne() {
   background(220);
+  fill(75, 175, 250);
+  rect(0, height/1.5, width, height);
 }
 
 function mousePressed() {
@@ -66,8 +69,6 @@ function mousePressed() {
   if (mouseY >= 284 && mouseY <= 290){
     startClick = true;
   }
-  console.log(mouseX);
-  console.log(mouseY);
 }
 
 function mouseReleased() {
@@ -88,46 +89,46 @@ function fishingBar() {
     squareShow = 0;
   }
 }
-
+// Maybe make a line that goes from one side to the other by every frame
 function barSquareCharge() {
   let powerColour;
+  let pmx = pmouseX + 46;
+  let pmy = pmouseY - 38;
   if (barPower > squareShow && squareShow < 30) {
     inSweetSpot = false;
     powerColour = fill("red");
-    square(80, 80, 40);
+    square(pmx - 40, pmy + 40, 10);
     squareShow++;
   }
   else if (barPower > squareShow && squareShow < 60){
     inSweetSpot = false;
     powerColour = fill("orange");
-    square(120, 120, 40);
+    square(pmx - 30, pmy + 40, 10);
     squareShow++;
   }
   else if (barPower > squareShow && squareShow < 90){
     inSweetSpot = false;
     powerColour = fill("yellow");
-    square(160, 160, 40);
+    square(pmx - 20, pmy + 40, 10);
     squareShow++;
   }
   else if (barPower > squareShow && squareShow < 120){
     inSweetSpot = false;
     powerColour = fill("green");
-    square(200, 200, 40);
+    square(pmx - 10, pmy + 40, 10);
     squareShow++;
   }
   else if (barPower > squareShow && squareShow < 140){
     // inSweetSpot === true we will make a noise, and you will get a perfect cast
     inSweetSpot = true;
-    powerColour = fill("black");
-    square(400, 400, 40);
+    powerColour = fill("blue");
+    square(pmx, pmy + 40, 10);
     squareShow++;
   }
   else{
     inSweetSpot = false;
     squareShow = 0;
   }
-  console.log(squareShow);
-  console.log(inSweetSpot);
 }
 
 // function castingState() {
@@ -139,19 +140,16 @@ function showRod(){
   noCursor();
   let pmx = pmouseX + 46;
   let pmy = pmouseY - 38;
-  fill(75, 175, 250);
-  rect(0, height/1.5, width, height);
   if (pmy < 480){
     imageMode(CENTER);
     image(rodStateNormal, pmx, pmy, 100, 100);
     fill("black");
     // make horizontal bar
-    rect(pmx - 80, pmy + 20, 20, 30);
+    rect(pmx - 40, pmy + 40, 50, 10);
   }
   
   else { 
     // Rests the rod on the water 
     image(rodStateNormal, pmx, pmy-(pmy - 480), 100, 100);
-    rect(pmx - 80, pmy + 20, 20, 30);
   }
 }
