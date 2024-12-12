@@ -9,6 +9,7 @@
 
 //Code is lagging for some unknown reason
 
+
 const BAR_SQUARE_CHARGE = 5;
 
 let barCharge = 5;
@@ -76,6 +77,8 @@ function mouseReleased() {
 }
 
 function fishingBar() {
+  let pmx = pmouseX + 46;
+  let pmy = pmouseY - 38;
   // mouseisPressed keeps going unless if it equals false
   if (mouseIsPressed) {
     barSquareCharge();
@@ -84,11 +87,19 @@ function fishingBar() {
       barPower++;
     }
   }
-  else {
-    barPower = 0;
-    squareShow = 0;
+  else if (mouseReleased){
+    // want to throw the line in
+    if (squareShow < 30){
+      line(pmx, pmy, 400, 500);
+    }
+    else{
+      barPower = 0;
+      squareShow = 0;
+    }
   }
 }
+
+
 // Maybe make a line that goes from one side to the other by every frame
 function barSquareCharge() {
   let powerColour;
@@ -131,6 +142,12 @@ function barSquareCharge() {
   }
 }
 
+function shortThrow() {
+  if (mouseReleased){
+
+  }
+}
+
 // function castingState() {
 //   // Casting state will be able to look at a certain distance from left to right 
 //   // translate() shifting what the origin is meaning I can shift where my character goes
@@ -140,7 +157,7 @@ function showRod(){
   noCursor();
   let pmx = pmouseX + 46;
   let pmy = pmouseY - 38;
-  if (pmy < 480){
+  if (pmy < height/1.6){
     imageMode(CENTER);
     image(rodStateNormal, pmx, pmy, 100, 100);
     fill("black");
