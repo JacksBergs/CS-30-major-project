@@ -28,13 +28,14 @@ let rodStateFishing;
 let rodStateHooked;
 let rodStateCaught;
 let rodStateLost;
-let rectX;
-let rectY;
-let rectW;
-let rectH;
 
 let bar = 0;
 let inSweetSpot = false;
+
+let bobberX;
+let bobberY;
+let bobDX;
+let bobDY;
 
 function preload() {
   // When the rod is neutral
@@ -87,18 +88,21 @@ function fishingBar() {
       barPower++;
     }
   }
-  else if (mouseReleased){
+  else if (mouseReleased && squareShow === 0){
     // want to throw the line in
     if (squareShow < 30){
       line(pmx, pmy, 400, 500);
     }
-    else{
-      barPower = 0;
-      squareShow = 0;
-    }
+  }
+  else{
+    barPower = 0;
+    squareShow = 0;
   }
 }
 
+function updateGravity() {
+
+}
 
 // Maybe make a line that goes from one side to the other by every frame
 function barSquareCharge() {
