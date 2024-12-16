@@ -8,6 +8,7 @@
 // mouseButton
 
 //Code is lagging for some unknown reason
+// make a state machine with a state variable
 
 
 const BAR_SQUARE_CHARGE = 5;
@@ -23,11 +24,13 @@ let startClick = false;
 let castHold = false;
 
 let cast;
-let rodStateNormal;
-let rodStateFishing;
-let rodStateHooked;
-let rodStateCaught;
-let rodStateLost;
+let rodImageNormal;
+let rodImageFishing;
+let rodImageHooked;
+let rodImageCaught;
+let rodImageLost;
+
+
 
 let bar = 0;
 let inSweetSpot = false;
@@ -78,20 +81,12 @@ function mouseReleased() {
 }
 
 function fishingBar() {
-  let pmx = pmouseX + 46;
-  let pmy = pmouseY - 38;
   // mouseisPressed keeps going unless if it equals false
   if (mouseIsPressed) {
     barSquareCharge();
     // Framecount makes it charge the bar past the frame amount 
     if (frameCount % 1 === 0) {
       barPower++;
-    }
-  }
-  else if (mouseReleased && squareShow === 0){
-    // want to throw the line in
-    if (squareShow < 30){
-      line(pmx, pmy, 400, 500);
     }
   }
   else{
@@ -143,12 +138,6 @@ function barSquareCharge() {
   else{
     inSweetSpot = false;
     squareShow = 0;
-  }
-}
-
-function shortThrow() {
-  if (mouseReleased){
-
   }
 }
 
