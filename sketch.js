@@ -7,10 +7,12 @@
 // p5.touchgui
 // mouseButton
 
+// Make a screen
 //Code is lagging for some unknown reason
 // make a state machine with a state variable
+// create a second screen(canvas) but for "hotbar"
 
-
+let waterHeight;
 const BAR_SQUARE_CHARGE = 5;
 
 let barCharge = 5;
@@ -20,7 +22,6 @@ let gui;
 let barPower = 0;
 let squareShow = 0;
 
-let startClick = false;
 let castHold = false;
 
 let cast;
@@ -30,15 +31,19 @@ let rodImageHooked;
 let rodImageCaught;
 let rodImageLost;
 
-
+let gameState = "menu";
+let fishingState = "neutral";
 
 let bar = 0;
 let inSweetSpot = false;
 
 let bobberX;
-let bobberY;
+let bobberY = 200;
 let bobDX;
 let bobDY;
+
+let pmx;
+let pmy;
 
 function preload() {
   // When the rod is neutral
@@ -49,35 +54,64 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   gui = createGui();
   startButton = createButton("Start the game", width/2 - 250, height/2 - 105, 400, 200);
+
+  waterHeight = height/1.5;
 }
 
 function draw() {
   background(220);
-  drawGui();
-  if (startClick === true) {
+  checkGameState();
+  pmx = pmouseX + 46;
+  pmy = pmouseY - 38;
+}
+
+function checkGameState() {
+  if (gameState === "menu") {
+    drawGui();
+  }
+  if (gameState === "world") {
     worldOne();
     showRod();
+    checkRodState();
+  }
+}
+
+function checkRodState() {
+  if (fishingState === "charging") {
     fishingBar();
+  }
+  if (fishingState === "casting") { 
+    updateGravity();
+    line(pmx, pmy, bobberX, bobberY);
   }
 }
 
 function worldOne() {
   background(220);
   fill(75, 175, 250);
-  rect(0, height/1.5, width, height);
+  rect(0, waterHeight, width, height);
 }
 
 function mousePressed() {
-  if (mouseX > width/2 - 250 && mouseX < width/2 + 150){
-    startClick = true;
+  if (mouseX > width/2 - 250 && mouseX < width/2 + 150 && gameState === "menu"){
+    gameState = "world";
   }
-  if (mouseY >= 284 && mouseY <= 290){
-    startClick = true;
+  if (mouseY >= 284 && mouseY <= 290 && gameState === "menu"){
+    gameState = "world";
+  }
+  if (fishingState === "neutral"){
+    fishingState = "charging";
   }
 }
 
 function mouseReleased() {
-
+  if (fishingState === "charging") {
+    fishingState = "casting";
+    bobberX = pmx;
+    bobberY = pmy;
+    bobDX = barPower / 5;
+    bobDY = -5;
+  }
 }
 
 function fishingBar() {
@@ -96,14 +130,28 @@ function fishingBar() {
 }
 
 function updateGravity() {
-
+  if (mouseReleased) {
+    console.log(bobDX);
+    //Do a ig gamestate === "world", and if not it can't do it, or it cant if it hovering over something
+    bobberX += bobDX;
+    bobberY += bobDY;
+    if (bobberY < waterHeight) {
+      bobDY += 0.1;
+    }
+    else {
+      bobberY = waterHeight;
+    }
+    if (bobDX > 0) {
+      bobDX -= 0.1;
+    }
+    else { 
+      bobDX = 0;
+    }
+  }
 }
 
 // Maybe make a line that goes from one side to the other by every frame
 function barSquareCharge() {
-  let powerColour;
-  let pmx = pmouseX + 46;
-  let pmy = pmouseY - 38;
   if (barPower > squareShow && squareShow < 30) {
     inSweetSpot = false;
     powerColour = fill("red");
@@ -148,8 +196,6 @@ function barSquareCharge() {
 
 function showRod(){
   noCursor();
-  let pmx = pmouseX + 46;
-  let pmy = pmouseY - 38;
   if (pmy < height/1.6){
     imageMode(CENTER);
     image(rodStateNormal, pmx, pmy, 100, 100);
