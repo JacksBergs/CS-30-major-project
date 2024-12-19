@@ -47,11 +47,11 @@ let pmy;
 
 function preload() {
   // When the rod is neutral
-  rodStateNormal = loadImage("Rod.png");
+  rodImageNormal = loadImage("Rod.png");
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(1000, 800);
   gui = createGui();
   startButton = createButton("Start the game", width/2 - 250, height/2 - 105, 400, 200);
 
@@ -63,6 +63,7 @@ function draw() {
   checkGameState();
   pmx = pmouseX + 46;
   pmy = pmouseY - 38;
+  console.log(squareShow);
 }
 
 function checkGameState() {
@@ -84,6 +85,9 @@ function checkRodState() {
     updateGravity();
     line(pmx, pmy, bobberX, bobberY);
   }
+  if (fishingState === "underwater"){
+
+  }
 }
 
 function worldOne() {
@@ -100,6 +104,8 @@ function mousePressed() {
     gameState = "world";
   }
   if (fishingState === "neutral"){
+    squareShow = 0;
+    barPower = 0;
     fishingState = "charging";
   }
 }
@@ -131,7 +137,6 @@ function fishingBar() {
 
 function updateGravity() {
   if (mouseReleased) {
-    console.log(bobDX);
     //Do a ig gamestate === "world", and if not it can't do it, or it cant if it hovering over something
     bobberX += bobDX;
     bobberY += bobDY;
@@ -144,11 +149,18 @@ function updateGravity() {
     if (bobDX > 0) {
       bobDX -= 0.1;
     }
+    else if(bobberX > width){
+      fishingState = "neutral";
+    }
     else { 
       bobDX = 0;
     }
+    if (bobDX === 0 && bobDY === waterHeight) {
+      fishingState = "fishing";
+    }
   }
 }
+
 
 // Maybe make a line that goes from one side to the other by every frame
 function barSquareCharge() {
@@ -186,6 +198,7 @@ function barSquareCharge() {
   else{
     inSweetSpot = false;
     squareShow = 0;
+    barPower = 0;
   }
 }
 
@@ -196,16 +209,16 @@ function barSquareCharge() {
 
 function showRod(){
   noCursor();
-  if (pmy < height/1.6){
+  if (pmy < height/ 1.6){
     imageMode(CENTER);
-    image(rodStateNormal, pmx, pmy, 100, 100);
+    image(rodImageNormal, pmx, pmy, 100, 100);
     fill("black");
     // make horizontal bar
     rect(pmx - 40, pmy + 40, 50, 10);
   }
   
-  else { 
+  else {
     // Rests the rod on the water 
-    image(rodStateNormal, pmx, pmy-(pmy - 480), 100, 100);
+    image(rodImageNormal, pmx, pmy-(pmy - 500), 100, 100);
   }
 }
