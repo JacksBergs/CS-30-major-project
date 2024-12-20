@@ -51,7 +51,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(1000, 800);
+  worldLevel = createCanvas(1000, 800);
   gui = createGui();
   startButton = createButton("Start the game", width/2 - 250, height/2 - 105, 400, 200);
 
@@ -85,8 +85,9 @@ function checkRodState() {
     updateGravity();
     line(pmx, pmy, bobberX, bobberY);
   }
-  if (fishingState === "underwater"){
-
+  if (fishingState === "fishing"){
+    bobberY = waterHeight;
+    line(pmx, pmy, bobberX, bobberY);
   }
 }
 
@@ -94,6 +95,7 @@ function worldOne() {
   background(220);
   fill(75, 175, 250);
   rect(0, waterHeight, width, height);
+  console.log(fishingState);
 }
 
 function mousePressed() {
@@ -117,6 +119,12 @@ function mouseReleased() {
     bobberY = pmy;
     bobDX = barPower / 5;
     bobDY = -5;
+  }
+}
+
+function keyPressed() {
+  if (key === "x") {
+    fishingState = "neutral";
   }
 }
 
@@ -144,7 +152,7 @@ function updateGravity() {
       bobDY += 0.1;
     }
     else {
-      bobberY = waterHeight;
+      fishingState = "fishing";
     }
     if (bobDX > 0) {
       bobDX -= 0.1;
@@ -202,10 +210,11 @@ function barSquareCharge() {
   }
 }
 
-// function castingState() {
-//   // Casting state will be able to look at a certain distance from left to right 
-//   // translate() shifting what the origin is meaning I can shift where my character goes
-// }
+function fishingWorldOne() {
+  if (fishingState === "fishing") {
+
+  }
+}
 
 function showRod(){
   noCursor();
