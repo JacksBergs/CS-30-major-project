@@ -6,3 +6,10 @@ html, body {
 canvas {
   display: block;
 }
+
+.thing {
+  color: red;
+  position: absolute;
+  top: 0;
+  left: 1200px;
+}

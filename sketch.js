@@ -14,7 +14,6 @@
 
 let waterHeight;
 const BAR_SQUARE_CHARGE = 5;
-
 let barCharge = 5;
 
 let gui;
@@ -45,6 +44,8 @@ let bobDY;
 let pmx;
 let pmy;
 
+let sentence;
+
 function preload() {
   // When the rod is neutral
   rodImageNormal = loadImage("Rod.png");
@@ -52,10 +53,14 @@ function preload() {
 
 function setup() {
   worldLevel = createCanvas(1000, 800);
+
   gui = createGui();
   startButton = createButton("Start the game", width/2 - 250, height/2 - 105, 400, 200);
 
   waterHeight = height/1.5;
+
+  sentence = createElement("p", "help");
+  sentence.class("thing");
 }
 
 function draw() {
@@ -97,7 +102,7 @@ function worldOne() {
   rect(0, waterHeight, width, height);
   console.log(fishingState);
 }
-
+x
 function mousePressed() {
   if (mouseX > width/2 - 250 && mouseX < width/2 + 150 && gameState === "menu"){
     gameState = "world";
