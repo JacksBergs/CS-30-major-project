@@ -150,7 +150,7 @@ function fishingBar() {
 
 function updateGravity() {
   if (mouseReleased) {
-    //Do a ig gamestate === "world", and if not it can't do it, or it cant if it hovering over something
+    //Do a if gamestate === "world", and if not it can't do it, or it cant if it hovering over something
     bobberX += bobDX;
     bobberY += bobDY;
     if (bobberY < waterHeight) {
@@ -162,6 +162,7 @@ function updateGravity() {
     if (bobDX > 0) {
       bobDX -= 0.1;
     }
+    // off screen goes back to player
     else if(bobberX > width){
       fishingState = "neutral";
     }
