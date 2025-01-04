@@ -52,16 +52,22 @@ function preload() {
 }
 
 function setup() {
-  worldLevel = createCanvas(1000, 800);
-
+  world1 = createCanvas(1000, 800);
   gui = createGui();
   startButton = createButton("Start the game", width/2 - 250, height/2 - 105, 400, 200);
-
   waterHeight = height/1.5;
 
   sentence = createElement("p", "help");
   sentence.class("thing");
 }
+
+function barOne(wrld) {
+  wrld.setup = function () {
+    wrld.createCanvas(1000, 800);
+    wrld.background(255);
+  }
+}
+
 
 function draw() {
   background(220);
@@ -102,7 +108,7 @@ function worldOne() {
   rect(0, waterHeight, width, height);
   console.log(fishingState);
 }
-x
+
 function mousePressed() {
   if (mouseX > width/2 - 250 && mouseX < width/2 + 150 && gameState === "menu"){
     gameState = "world";
