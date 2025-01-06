@@ -11,9 +11,11 @@
 //Code is lagging for some unknown reason
 // make a state machine with a state variable
 // create a second screen(canvas) but for "hotbar"
+// Make a pElement, create a label and such anywhere on the screen
 
 let waterHeight;
 const BAR_SQUARE_CHARGE = 5;
+
 let barCharge = 5;
 
 let gui;
@@ -44,7 +46,7 @@ let bobDY;
 let pmx;
 let pmy;
 
-let sentence;
+let theTest;
 
 function preload() {
   // When the rod is neutral
@@ -52,22 +54,14 @@ function preload() {
 }
 
 function setup() {
-  world1 = createCanvas(1000, 800);
+  worldLevel = createCanvas(1000, 800);
   gui = createGui();
   startButton = createButton("Start the game", width/2 - 250, height/2 - 105, 400, 200);
+
   waterHeight = height/1.5;
-
-  sentence = createElement("p", "help");
-  sentence.class("thing");
+  // theTest = createP("this is a test");
+  // theTest.parent("thing");
 }
-
-function barOne(wrld) {
-  wrld.setup = function () {
-    wrld.createCanvas(1000, 800);
-    wrld.background(255);
-  }
-}
-
 
 function draw() {
   background(220);
@@ -86,6 +80,9 @@ function checkGameState() {
     showRod();
     checkRodState();
   }
+  if (gameState === "Gamecatching") {
+    catchingFish();
+  }
 }
 
 function checkRodState() {
@@ -99,6 +96,16 @@ function checkRodState() {
   if (fishingState === "fishing"){
     bobberY = waterHeight;
     line(pmx, pmy, bobberX, bobberY);
+    fishingWorldOne();
+  }
+  if (fishingState === "catching") {
+    gameState = "gameCatching";
+  }
+  if (fishingState === "caught"){
+
+  }
+  if (fishingState === "lost") {
+
   }
 }
 
@@ -107,6 +114,16 @@ function worldOne() {
   fill(75, 175, 250);
   rect(0, waterHeight, width, height);
   console.log(fishingState);
+}
+
+function fishingWorldOne() {
+  if (fishingState === "fishing") {
+    fishingState = "catching";
+  }
+}
+
+function catchingFish() {
+  background(220);
 }
 
 function mousePressed() {
@@ -156,7 +173,7 @@ function fishingBar() {
 
 function updateGravity() {
   if (mouseReleased) {
-    //Do a if gamestate === "world", and if not it can't do it, or it cant if it hovering over something
+    //Do a ig gamestate === "world", and if not it can't do it, or it cant if it hovering over something
     bobberX += bobDX;
     bobberY += bobDY;
     if (bobberY < waterHeight) {
@@ -168,15 +185,11 @@ function updateGravity() {
     if (bobDX > 0) {
       bobDX -= 0.1;
     }
-    // off screen goes back to player
     else if(bobberX > width){
       fishingState = "neutral";
     }
     else { 
       bobDX = 0;
-    }
-    if (bobDX === 0 && bobDY === waterHeight) {
-      fishingState = "fishing";
     }
   }
 }
@@ -219,12 +232,6 @@ function barSquareCharge() {
     inSweetSpot = false;
     squareShow = 0;
     barPower = 0;
-  }
-}
-
-function fishingWorldOne() {
-  if (fishingState === "fishing") {
-
   }
 }
 
