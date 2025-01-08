@@ -75,13 +75,14 @@ function checkGameState() {
   if (gameState === "menu") {
     drawGui();
   }
+
   if (gameState === "world") {
     worldOne();
     showRod();
     checkRodState();
   }
-  if (gameState === "Gamecatching") {
-    catchingFish();
+  if (gameState === "gameCatching") {
+    fishingWorldOne();
   }
 }
 
@@ -96,7 +97,6 @@ function checkRodState() {
   if (fishingState === "fishing"){
     bobberY = waterHeight;
     line(pmx, pmy, bobberX, bobberY);
-    fishingWorldOne();
   }
   if (fishingState === "catching") {
     gameState = "gameCatching";
@@ -117,9 +117,7 @@ function worldOne() {
 }
 
 function fishingWorldOne() {
-  if (fishingState === "fishing") {
-    fishingState = "catching";
-  }
+
 }
 
 function catchingFish() {
@@ -128,10 +126,12 @@ function catchingFish() {
 
 function mousePressed() {
   if (mouseX > width/2 - 250 && mouseX < width/2 + 150 && gameState === "menu"){
-    gameState = "world";
+    // gameState = "world";
+    gameState = "gameCatching";
   }
   if (mouseY >= 284 && mouseY <= 290 && gameState === "menu"){
-    gameState = "world";
+    // gameState = "world";
+    gameState = "gameCatching";
   }
   if (fishingState === "neutral"){
     squareShow = 0;
