@@ -13,6 +13,36 @@
 // create a second screen(canvas) but for "hotbar"
 // Make a pElement, create a label and such anywhere on the screen
 
+let gridOne =[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+];
+
+const GRID_SIZE = 10;
+const OPEN_TILE = 0;
+const PLAYER_TILE = 2;
+const ENEMY_TILE = 3;
+
+let playerSquare = {
+  x: 3,
+  y: 4,
+};
+
+let enemySquare = {
+  x: 0,
+  y: 0,
+};
+
+let cellSize;
+
 let waterHeight;
 const BAR_SQUARE_CHARGE = 5;
 
@@ -48,19 +78,32 @@ let pmy;
 
 let theTest;
 
+let click = false;
+let timer = 500; // going to do it in millis
+let tickRate = 50;
+
 function preload() {
   // When the rod is neutral
   rodImageNormal = loadImage("Rod.png");
 }
 
-function setup() {
+function setup() { 
   worldLevel = createCanvas(1000, 800);
+
+  if (windowWidth < windowHeight){
+    createCanvas(windowWidth, windowWidth);
+  }
+  else{
+    createCanvas(windowHeight, windowHeight);
+  }
+
   gui = createGui();
   startButton = createButton("Start the game", width/2 - 250, height/2 - 105, 400, 200);
 
   waterHeight = height/1.5;
   // theTest = createP("this is a test");
   // theTest.parent("thing");
+  cellSize = height/GRID_SIZE;
 }
 
 function draw() {
@@ -74,14 +117,37 @@ function draw() {
 function checkGameState() {
   if (gameState === "menu") {
     drawGui();
+    click = false;
   }
+
   if (gameState === "world") {
     worldOne();
     showRod();
     checkRodState();
+    let click = false;
   }
-  if (gameState === "Gamecatching") {
-    catchingFish();
+  if (gameState === "gameCatching") {
+    click = true;
+    if (click === true){
+      // Spawns in the player
+      console.log(playerSquare.y, playerSquare.x);
+      console.log(gridOne);
+      gridOne[playerSquare.y][playerSquare.x] = PLAYER_TILE;
+      gridOne[enemySquare.y][enemySquare.x] = ENEMY_TILE;
+      // Displays the grid
+      gridChangeOne = true;
+      displayGridOne();
+      // moves the enemy
+      autoMoveEnemy();
+      // Shows the frames counting up text
+      fill("black");
+      textSize(30);
+      text(frameCount, 800, 100);
+    }
+    else if (click === false){
+      text("hello", width/2, height/2);
+    }
+    // fishingWorldOne();
   }
 }
 
@@ -96,7 +162,6 @@ function checkRodState() {
   if (fishingState === "fishing"){
     bobberY = waterHeight;
     line(pmx, pmy, bobberX, bobberY);
-    fishingWorldOne();
   }
   if (fishingState === "catching") {
     gameState = "gameCatching";
@@ -117,9 +182,7 @@ function worldOne() {
 }
 
 function fishingWorldOne() {
-  if (fishingState === "fishing") {
-    fishingState = "catching";
-  }
+
 }
 
 function catchingFish() {
@@ -128,10 +191,12 @@ function catchingFish() {
 
 function mousePressed() {
   if (mouseX > width/2 - 250 && mouseX < width/2 + 150 && gameState === "menu"){
-    gameState = "world";
+    // gameState = "world";
+    gameState = "gameCatching";
   }
   if (mouseY >= 284 && mouseY <= 290 && gameState === "menu"){
-    gameState = "world";
+    // gameState = "world";
+    gameState = "gameCatching";
   }
   if (fishingState === "neutral"){
     squareShow = 0;
@@ -153,6 +218,24 @@ function mouseReleased() {
 function keyPressed() {
   if (key === "x") {
     fishingState = "neutral";
+  }
+  if (click === true){
+    // Moves up
+    if (key === "w"){
+      movePlayer(playerSquare.x, playerSquare.y - 1);
+    }
+    // Moves right
+    if (key === "a"){
+      movePlayer(playerSquare.x - 1, playerSquare.y);
+    }
+    // Moves down
+    if (key === "s"){
+      movePlayer(playerSquare.x, playerSquare.y + 1);
+    }
+    // Moves left
+    if (key === "d"){
+      movePlayer(playerSquare.x + 1, playerSquare.y);
+    }
   }
 }
 
@@ -248,5 +331,90 @@ function showRod(){
   else {
     // Rests the rod on the water 
     image(rodImageNormal, pmx, pmy-(pmy - 500), 100, 100);
+  }
+}
+
+function autoMoveEnemy() {
+  // This is the losing screen
+  // if the tickRate = 0, it goes as fast as it orignially does
+  if (playerSquare.x === enemySquare.x && playerSquare.y === enemySquare.y + 1){
+    
+  }
+  if (frameCount % tickRate === 0){
+    if (enemySquare.y >= 4){
+      tickRate -= 5;
+      gridOne[enemySquare.y][enemySquare.x] = OPEN_TILE;
+      enemySquare.y = 0;
+      enemySquare.x = round(random(0, 9));
+      enemyMove(enemySquare.x, enemySquare.y);
+    }
+    else if (enemySquare.y <= 3){
+      enemyMove(enemySquare.x, enemySquare.y + 1);
+    }
+  }
+  if (tickRate === 0) {
+    if (enemySquare.y >= 4){
+      gridOne[enemySquare.y][enemySquare.x] = OPEN_TILE;
+      enemySquare.y = 0;
+      enemySquare.x = round(random(0, 9));
+      enemyMove(enemySquare.x, enemySquare.y);
+    }
+    else if (enemySquare.y <= 3){
+      enemyMove(enemySquare.x, enemySquare.y + 1);
+    }
+  }
+}
+
+function enemyMove(x, y){
+  if (x >= 0 && x < GRID_SIZE && y >= 0 && y < GRID_SIZE && gridOne[y][x] === OPEN_TILE){
+    gridOne[enemySquare.y][enemySquare.x] = OPEN_TILE;
+
+    // keep track of enemy location
+    enemySquare.x = x;
+    enemySquare.y = y;
+
+    // put enemy in the grid
+    gridOne[enemySquare.y][enemySquare.x] = ENEMY_TILE;
+    gridOne[playerSquare.y][playerSquare.x] = PLAYER_TILE;
+  }
+}
+
+function displayGridOne(){
+  if (gridChangeOne === true){
+    //Objects/Players
+    for (let y = 0; y < GRID_SIZE; y++){
+      for (let x = 0; x < GRID_SIZE; x++){
+        if(gridOne[y][x] === OPEN_TILE){
+          fill("white");
+          square(x * cellSize, y * cellSize + height/2, cellSize);
+        }
+        else if(gridOne[y][x] === PLAYER_TILE){
+          fill("red");
+          square(x * cellSize, y * cellSize + height/2, cellSize);
+        }
+        else if(gridOne[y][x] === ENEMY_TILE){
+          fill("blue");
+          square(x * cellSize, y * cellSize + height/2, cellSize);
+        }
+        else if(grid[y][x] === HIT_TILE){
+          fill("yellow");
+          square(x * cellSize, y * cellSize + height/2, cellSize);
+        }
+      }
+    }
+  }
+}
+
+function movePlayer(x, y){
+  if (x >= 0 && x < GRID_SIZE && y >= 0 && y < GRID_SIZE && gridOne[y][x] === OPEN_TILE){
+    //when moving reset to an open spot
+    gridOne[playerSquare.y][playerSquare.x] = OPEN_TILE;
+
+    // keep track of player location
+    playerSquare.x = x;
+    playerSquare.y = y;
+
+    // put player in the grid
+    gridOne[playerSquare.y][playerSquare.x] = PLAYER_TILE;
   }
 }
