@@ -81,6 +81,7 @@ let theTest;
 let click = false;
 let timer = 500; // going to do it in millis
 let tickRate = 50;
+let barCounter = 0;
 
 function preload() {
   // When the rod is neutral
@@ -220,17 +221,9 @@ function keyPressed() {
     fishingState = "neutral";
   }
   if (click === true){
-    // Moves up
-    if (key === "w"){
-      movePlayer(playerSquare.x, playerSquare.y - 1);
-    }
     // Moves right
     if (key === "a"){
       movePlayer(playerSquare.x - 1, playerSquare.y);
-    }
-    // Moves down
-    if (key === "s"){
-      movePlayer(playerSquare.x, playerSquare.y + 1);
     }
     // Moves left
     if (key === "d"){
@@ -338,7 +331,11 @@ function autoMoveEnemy() {
   // This is the losing screen
   // if the tickRate = 0, it goes as fast as it orignially does
   if (playerSquare.x === enemySquare.x && playerSquare.y === enemySquare.y + 1){
-    
+    enemySquare.y = 0;
+    barCounter++;
+    if (barCounter === 5) {
+      fishingState === "caught";
+    }
   }
   if (frameCount % tickRate === 0){
     if (enemySquare.y >= 4){
