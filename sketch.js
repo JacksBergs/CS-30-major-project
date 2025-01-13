@@ -62,6 +62,10 @@ let rodImageHooked;
 let rodImageCaught;
 let rodImageLost;
 
+let easyFish = ["Bob", "Gilbert", "Hermet", "Junior"];
+let mediumFish;
+let hardFish = [];
+
 let gameState = "menu";
 let fishingState = "neutral";
 
@@ -89,6 +93,7 @@ let frameBufferTime;
 function preload() {
   // When the rod is neutral
   rodImageNormal = loadImage("Rod.png");
+  hardFish.push(loadImage("Broligi.jpg"));
 }
 
 function setup() { 
@@ -172,13 +177,10 @@ function checkRodState() {
     }
     if (fishingLineCount + frameBufferTime <= frameCount) {
       gameState = "gameCatching";
-  }
-  }
-  if (fishingState === "catching") {
-
+    }
   }
   if (fishingState === "caught"){
-
+    image(hardFish[0], pmouseX, pmouseY, 500, 500); 
   }
   if (fishingState === "lost") {
 
