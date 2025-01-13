@@ -83,6 +83,9 @@ let timer = 500; // going to do it in millis
 let tickRate = 50;
 let barCounter = 0;
 
+let fishingLineCount;
+let frameBufferTime;
+
 function preload() {
   // When the rod is neutral
   rodImageNormal = loadImage("Rod.png");
@@ -163,9 +166,16 @@ function checkRodState() {
   if (fishingState === "fishing"){
     bobberY = waterHeight;
     line(pmx, pmy, bobberX, bobberY);
+    if (!fishingLineCount) {
+      fishingLineCount = frameCount;
+      frameBufferTime = (random(300, 900));
+    }
+    if (fishingLineCount + frameBufferTime <= frameCount) {
+      gameState = "gameCatching";
+  }
   }
   if (fishingState === "catching") {
-    gameState = "gameCatching";
+
   }
   if (fishingState === "caught"){
 
@@ -193,11 +203,11 @@ function catchingFish() {
 function mousePressed() {
   if (mouseX > width/2 - 250 && mouseX < width/2 + 150 && gameState === "menu"){
     // gameState = "world";
-    gameState = "gameCatching";
+    gameState = "world";
   }
   if (mouseY >= 284 && mouseY <= 290 && gameState === "menu"){
     // gameState = "world";
-    gameState = "gameCatching";
+    gameState = "world";
   }
   if (fishingState === "neutral"){
     squareShow = 0;
@@ -331,33 +341,37 @@ function autoMoveEnemy() {
   // This is the losing screen
   // if the tickRate = 0, it goes as fast as it orignially does
   if (playerSquare.x === enemySquare.x && playerSquare.y === enemySquare.y + 1){
+    gridOne[enemySquare.y][enemySquare.x] = OPEN_TILE;
     enemySquare.y = 0;
+    enemySquare.x = round(random(0, 9));
     barCounter++;
     if (barCounter === 5) {
-      fishingState === "caught";
+      fishingState = "caught";
     }
   }
-  if (frameCount % tickRate === 0){
-    if (enemySquare.y >= 4){
-      tickRate -= 5;
-      gridOne[enemySquare.y][enemySquare.x] = OPEN_TILE;
-      enemySquare.y = 0;
-      enemySquare.x = round(random(0, 9));
-      enemyMove(enemySquare.x, enemySquare.y);
+  if (fishingState !== "caught") {
+    if (frameCount % tickRate === 0){
+      if (enemySquare.y >= 4){
+        tickRate -= 5;
+        gridOne[enemySquare.y][enemySquare.x] = OPEN_TILE;
+        enemySquare.y = 0;
+        enemySquare.x = round(random(0, 9));
+        enemyMove(enemySquare.x, enemySquare.y);
+      }
+      else if (enemySquare.y <= 3){
+        enemyMove(enemySquare.x, enemySquare.y + 1);
+      }
     }
-    else if (enemySquare.y <= 3){
-      enemyMove(enemySquare.x, enemySquare.y + 1);
-    }
-  }
-  if (tickRate === 0) {
-    if (enemySquare.y >= 4){
-      gridOne[enemySquare.y][enemySquare.x] = OPEN_TILE;
-      enemySquare.y = 0;
-      enemySquare.x = round(random(0, 9));
-      enemyMove(enemySquare.x, enemySquare.y);
-    }
-    else if (enemySquare.y <= 3){
-      enemyMove(enemySquare.x, enemySquare.y + 1);
+    if (tickRate === 0) {
+      if (enemySquare.y >= 4){
+        gridOne[enemySquare.y][enemySquare.x] = OPEN_TILE;
+        enemySquare.y = 0;
+        enemySquare.x = round(random(0, 9));
+        enemyMove(enemySquare.x, enemySquare.y);
+      }
+      else if (enemySquare.y <= 3){
+        enemyMove(enemySquare.x, enemySquare.y + 1);
+      }
     }
   }
 }
