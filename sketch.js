@@ -6,9 +6,6 @@
 // If hide cursor equals true, put cursor at the top right
 // p5.touchgui
 // mouseButton
-
-// Make a screen
-//Code is lagging for some unknown reason
 // make a state machine with a state variable
 // create a second screen(canvas) but for "hotbar"
 // Make a pElement, create a label and such anywhere on the screen
@@ -32,7 +29,7 @@ const PLAYER_TILE = 2;
 const ENEMY_TILE = 3;
 
 let playerSquare = {
-  x: 3,
+  x: 5,
   y: 4,
 };
 
@@ -65,6 +62,7 @@ let rodImageLost;
 let easyFish = ["Bob", "Gilbert", "Hermet", "Junior"];
 let mediumFish;
 let hardFish = [];
+let fishVariable = "none";
 
 let gameState = "menu";
 let fishingState = "neutral";
@@ -123,6 +121,19 @@ function draw() {
   console.log(squareShow);
 }
 
+function pickRandomFish() {
+  let fishPicker = round(random(0, 100));
+  if (fishPicker <= 100) {
+    return hardFish[round(random(0, hardFish.length - 1))];
+  }
+  else if(fishPicker <= 40) {
+    return mediumFish[round(random(0, mediumFish.length - 1))];
+  }
+  else {
+    return easyFish[round(random(0, easyFish.length - 1))];
+  }
+}
+
 function checkGameState() {
   if (gameState === "menu") {
     drawGui();
@@ -136,11 +147,17 @@ function checkGameState() {
     let click = false;
   }
   if (gameState === "gameCatching") {
+    if (fishVariable === "none") {
+      // fishVariable = hardFish[0];
+      fishVariable = pickRandomFish();
+    }
+    else { 
+      image(fishVariable, 100, 100);
+    }
+    // image(hardFish[0], 100, 100, 500, 500); 
     click = true;
     if (click === true){
       // Spawns in the player
-      console.log(playerSquare.y, playerSquare.x);
-      console.log(gridOne);
       gridOne[playerSquare.y][playerSquare.x] = PLAYER_TILE;
       gridOne[enemySquare.y][enemySquare.x] = ENEMY_TILE;
       // Displays the grid
@@ -177,15 +194,19 @@ function checkRodState() {
     }
     if (fishingLineCount + frameBufferTime <= frameCount) {
       gameState = "gameCatching";
+      fishingLineCount = 0;
     }
   }
   if (fishingState === "caught"){
-    image(hardFish[0], pmouseX, pmouseY, 500, 500); 
+    gameState = "world";
+    fishingState = "neutral";
+    fishVariable = "none";
   }
   if (fishingState === "lost") {
 
   }
 }
+
 
 function worldOne() {
   background(220);
@@ -349,6 +370,8 @@ function autoMoveEnemy() {
     barCounter++;
     if (barCounter === 5) {
       fishingState = "caught";
+      checkRodState();
+      barCounter = 0;
     }
   }
   if (fishingState !== "caught") {
