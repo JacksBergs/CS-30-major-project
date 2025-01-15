@@ -46,6 +46,8 @@ const BAR_SQUARE_CHARGE = 5;
 let barCharge = 5;
 
 let gui;
+let guiSlider;
+let slider;
 
 let barPower = 0;
 let squareShow = 0;
@@ -87,6 +89,7 @@ let barCounter = 0;
 
 let fishingLineCount;
 let frameBufferTime;
+let startButton;
 
 function preload() {
   // When the rod is neutral
@@ -104,8 +107,10 @@ function setup() {
     createCanvas(windowHeight, windowHeight);
   }
 
-  gui = createGui();
-  startButton = createButton("Start the game", width/2 - 250, height/2 - 105, 400, 200);
+  startButton = createButton("Start the game");
+  startButton.position(0, 100);
+  // startButton.position(width/2 - 250, height/2 - 105);
+  //width/2 - 250, height/2 - 105, 400, 200)
 
   waterHeight = height/1.5;
   // theTest = createP("this is a test");
@@ -136,12 +141,13 @@ function pickRandomFish() {
 
 function checkGameState() {
   if (gameState === "menu") {
-    drawGui();
+    // drawGui();
     click = false;
   }
 
   if (gameState === "world") {
     worldOne();
+    drawGui();
     showRod();
     checkRodState();
     let click = false;
@@ -174,6 +180,9 @@ function checkGameState() {
       text("hello", width/2, height/2);
     }
     // fishingWorldOne();
+  }
+  if (gameState === "ofishuary") {
+
   }
 }
 
@@ -215,7 +224,15 @@ function worldOne() {
   console.log(fishingState);
 }
 
-function fishingWorldOne() {
+function fishBook() {
+  background(220);
+}
+
+function fishCaught() {
+
+}
+
+function fishSeen() {
 
 }
 
