@@ -45,8 +45,6 @@ const BAR_SQUARE_CHARGE = 5;
 
 let barCharge = 5;
 
-let gui;
-let guiSlider;
 let slider;
 
 let barPower = 0;
@@ -60,6 +58,12 @@ let rodImageFishing;
 let rodImageHooked;
 let rodImageCaught;
 let rodImageLost;
+
+let hand;
+let handHit;
+let hitW;
+let hitH;
+let hitDY;
 
 let easyFish = ["Bob", "Gilbert", "Hermet", "Junior"];
 let mediumFish;
@@ -90,10 +94,13 @@ let barCounter = 0;
 let fishingLineCount;
 let frameBufferTime;
 let startButton;
+let ofishuaryBook;
 
 function preload() {
   // When the rod is neutral
   rodImageNormal = loadImage("Rod.png");
+  handNormal = loadImage("Hand.png");
+  handHitting = loadImage("HitHand.png");
   hardFish.push(loadImage("Broligi.jpg"));
 }
 
@@ -108,7 +115,10 @@ function setup() {
   }
 
   startButton = createButton("Start the game");
-  startButton.position(0, 100);
+  startButton.position(1100, 0);
+
+  ofishuaryBook = createButton("Check your fish here");
+  ofishuaryBook.position(1100, 500);
   // startButton.position(width/2 - 250, height/2 - 105);
   //width/2 - 250, height/2 - 105, 400, 200)
 
@@ -121,6 +131,7 @@ function setup() {
 function draw() {
   background(220);
   checkGameState();
+  hitHand();
   pmx = pmouseX + 46;
   pmy = pmouseY - 38;
   console.log(squareShow);
@@ -141,16 +152,14 @@ function pickRandomFish() {
 
 function checkGameState() {
   if (gameState === "menu") {
-    // drawGui();
     click = false;
   }
 
   if (gameState === "world") {
     worldOne();
-    drawGui();
     showRod();
     checkRodState();
-    let click = false;
+    click = false;
   }
   if (gameState === "gameCatching") {
     if (fishVariable === "none") {
@@ -163,6 +172,7 @@ function checkGameState() {
     // image(hardFish[0], 100, 100, 500, 500); 
     click = true;
     if (click === true){
+      image(handNormal, 100, 100);
       // Spawns in the player
       gridOne[playerSquare.y][playerSquare.x] = PLAYER_TILE;
       gridOne[enemySquare.y][enemySquare.x] = ENEMY_TILE;
@@ -176,12 +186,9 @@ function checkGameState() {
       textSize(30);
       text(frameCount, 800, 100);
     }
-    else if (click === false){
-      text("hello", width/2, height/2);
-    }
-    // fishingWorldOne();
   }
   if (gameState === "ofishuary") {
+    background(220);
 
   }
 }
@@ -241,11 +248,7 @@ function catchingFish() {
 }
 
 function mousePressed() {
-  if (mouseX > width/2 - 250 && mouseX < width/2 + 150 && gameState === "menu"){
-    // gameState = "world";
-    gameState = "world";
-  }
-  if (mouseY >= 284 && mouseY <= 290 && gameState === "menu"){
+  if (mouseX >= 1100 && mouseX <= 1200 && mouseY >= 0 && mouseY <= 25 && gameState === "menu"){
     // gameState = "world";
     gameState = "world";
   }
@@ -253,6 +256,17 @@ function mousePressed() {
     squareShow = 0;
     barPower = 0;
     fishingState = "charging";
+  }
+  if (gameState === "world") {
+    if (mouseX >= 1100 && mouseX <= 1200 && mouseY >= 500 && mouseY <= 525){
+      gameState = "ofishuary";
+    }
+  }
+}
+
+function doubleClicked() {
+  if (mouseX >= 1100 && mouseX <= 1200 && mouseY >= 500 && mouseY <= 525){
+    gameState = "world";
   }
 }
 
@@ -377,10 +391,25 @@ function showRod(){
   }
 }
 
+function hitHand() {
+  hitW = 300;
+  hitH = 200;
+  hitDY = 1; 
+  image(handHitting, hitW, hitH);
+  someHit -= hitDY;
+  if (hitH >= 100) {
+    hitDY *= 1;
+  }
+  else if(hitH <= 200){
+    hitDY *= -1;
+  }
+}
+
 function autoMoveEnemy() {
   // This is the losing screen
   // if the tickRate = 0, it goes as fast as it orignially does
   if (playerSquare.x === enemySquare.x && playerSquare.y === enemySquare.y + 1){
+    hitHand();
     gridOne[enemySquare.y][enemySquare.x] = OPEN_TILE;
     enemySquare.y = 0;
     enemySquare.x = round(random(0, 9));
