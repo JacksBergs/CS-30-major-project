@@ -45,8 +45,6 @@ const BAR_SQUARE_CHARGE = 5;
 
 let barCharge = 5;
 
-let slider;
-
 let barPower = 0;
 let squareShow = 0;
 
@@ -59,16 +57,19 @@ let rodImageHooked;
 let rodImageCaught;
 let rodImageLost;
 
+// These are for the hands
 let hand;
 let handHit;
 let hitW;
 let hitH;
 let hitDY;
 
+// randomizing the fish
 let easyFish = ["Bob", "Gilbert", "Hermet", "Junior"];
 let mediumFish;
 let hardFish = [];
 let fishVariable = "none";
+
 
 let gameState = "menu";
 let fishingState = "neutral";
@@ -83,6 +84,9 @@ let bobDY;
 
 let pmx;
 let pmy;
+let xTranslate;
+let yTranslate;
+let slider;
 
 let theTest;
 
@@ -119,6 +123,8 @@ function setup() {
 
   ofishuaryBook = createButton("Check your fish here");
   ofishuaryBook.position(1100, 500);
+
+  slider = createSlider();
   // startButton.position(width/2 - 250, height/2 - 105);
   //width/2 - 250, height/2 - 105, 400, 200)
 
@@ -129,11 +135,17 @@ function setup() {
 }
 
 function draw() {
+  let x = slider.value() * 2;
+
+  translate(x, 50);
   background(220);
   checkGameState();
   pmx = pmouseX + 46;
   pmy = pmouseY - 38;
   console.log(squareShow);
+  // slider.position(450, 1000);
+  // let x = slider.value() * 2;
+  // background(translate(g, 50));
 }
 
 function pickRandomFish() {
@@ -159,6 +171,7 @@ function checkGameState() {
     showRod();
     checkRodState();
     click = false;
+    slider.position(450, 1000);
   }
   if (gameState === "gameCatching") {
     if (fishVariable === "none") {
@@ -189,7 +202,6 @@ function checkGameState() {
   if (gameState === "ofishuary") {
     cursor();
     background(220);
-    rect(100, 100, 200, 150);
 
   }
 }
