@@ -131,7 +131,6 @@ function setup() {
 function draw() {
   background(220);
   checkGameState();
-  hitHand();
   pmx = pmouseX + 46;
   pmy = pmouseY - 38;
   console.log(squareShow);
@@ -188,7 +187,9 @@ function checkGameState() {
     }
   }
   if (gameState === "ofishuary") {
+    cursor();
     background(220);
+    rect(100, 100, 200, 150);
 
   }
 }
@@ -392,17 +393,17 @@ function showRod(){
 }
 
 function hitHand() {
-  hitW = 300;
-  hitH = 200;
-  hitDY = 1; 
-  image(handHitting, hitW, hitH);
-  someHit -= hitDY;
-  if (hitH >= 100) {
-    hitDY *= 1;
-  }
-  else if(hitH <= 200){
-    hitDY *= -1;
-  }
+  // hitW = 300;
+  // hitH = 200;
+  // hitDY = 1; 
+  // image(handHitting, hitW, hitH);
+  // someHit -= hitDY;
+  // if (hitH >= 100) {
+  //   hitDY *= 1;
+  // }
+  // else if(hitH <= 200){
+  //   hitDY *= -1;
+  // }
 }
 
 function autoMoveEnemy() {
