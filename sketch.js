@@ -9,6 +9,8 @@
 // make a state machine with a state variable
 // create a second screen(canvas) but for "hotbar"
 // Make a pElement, create a label and such anywhere on the screen
+// Once you catch the fish you add it to a list, then that list will be used for the book and if its blurred
+// Make a class to show fish in ofishuary
 
 let gridOne =[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -65,10 +67,11 @@ let hitH;
 let hitDY;
 
 // randomizing the fish
-let easyFish = ["Bob", "Gilbert", "Hermet", "Junior"];
-let mediumFish;
+let easyFish = [];
+let mediumFish = [];
 let hardFish = [];
 let fishVariable = "none";
+let pickNewFish = "none";
 
 
 let gameState = "menu";
@@ -105,6 +108,9 @@ function preload() {
   rodImageNormal = loadImage("Rod.png");
   handNormal = loadImage("Hand.png");
   handHitting = loadImage("HitHand.png");
+  easyFish.push(loadImage("Bob.png"));
+  easyFish.push(loadImage("Jeremy.png"));
+  mediumFish.push(loadImage("BobHatman.png"));
   hardFish.push(loadImage("Broligi.jpg"));
 }
 
@@ -135,30 +141,13 @@ function setup() {
 }
 
 function draw() {
-  let x = slider.value() * 2;
-
-  translate(x, 50);
+  slider.position(800, 600);
+  let x = slider.value() * 5;
   background(220);
   checkGameState();
   pmx = pmouseX + 46;
   pmy = pmouseY - 38;
   console.log(squareShow);
-  // slider.position(450, 1000);
-  // let x = slider.value() * 2;
-  // background(translate(g, 50));
-}
-
-function pickRandomFish() {
-  let fishPicker = round(random(0, 100));
-  if (fishPicker <= 100) {
-    return hardFish[round(random(0, hardFish.length - 1))];
-  }
-  else if(fishPicker <= 40) {
-    return mediumFish[round(random(0, mediumFish.length - 1))];
-  }
-  else {
-    return easyFish[round(random(0, easyFish.length - 1))];
-  }
 }
 
 function checkGameState() {
@@ -169,14 +158,17 @@ function checkGameState() {
   if (gameState === "world") {
     worldOne();
     showRod();
+    fishVariable = "none";
     checkRodState();
     click = false;
-    slider.position(450, 1000);
   }
   if (gameState === "gameCatching") {
     if (fishVariable === "none") {
       // fishVariable = hardFish[0];
       fishVariable = pickRandomFish();
+    }
+    else if(pickNewFish === "newFish") {
+      fishVariable;
     }
     else { 
       image(fishVariable, 100, 100);
@@ -202,7 +194,24 @@ function checkGameState() {
   if (gameState === "ofishuary") {
     cursor();
     background(220);
+    slider.position(800, 600);
+    let x = slider.value() * 6;
+    translate(x, 50);
+    rect(0, 200, width, 100);
 
+  }
+}
+
+function pickRandomFish() {
+  let fishPicker = round(random(0, 100));
+  if (fishPicker <= 5) {
+    return hardFish[round(random(0, hardFish.length - 1))];
+  }
+  else if(fishPicker <= 40) {
+    return mediumFish[round(random(0, mediumFish.length - 1))];
+  }
+  else {
+    return easyFish[round(random(0, easyFish.length - 1))];
   }
 }
 
