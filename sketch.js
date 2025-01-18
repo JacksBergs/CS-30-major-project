@@ -11,6 +11,31 @@
 // Make a pElement, create a label and such anywhere on the screen
 // Once you catch the fish you add it to a list, then that list will be used for the book and if its blurred
 // Make a class to show fish in ofishuary
+// Create a class of fish, basically the whole class will include a characters rarity, its name, its image type, whether or not they are found
+// a constructor defines all the features of my fish, race religion other fish stuff
+// If you do somehting like Bob.display it do the parameter that you have for display
+ //newFish = new Fish("bob", "Bob.png", "silly guy", hardFish)
+
+class Fish {
+  constructor(name, imageFile, description, rarity) {
+    this.name = name
+    this.imageFile = imageFile
+    this.description = description
+    this.rarity = rarity
+    this.imageX = 0
+    this.imageY = 0
+    this.imageLength = 200
+    this.imageWidth = 200
+    this.fishFound = false
+  }
+
+  displayinBook() {
+    this.fishFound = true;
+    this.description = description
+    
+  }
+
+}
 
 let gridOne =[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -141,13 +166,11 @@ function setup() {
 }
 
 function draw() {
-  slider.position(800, 600);
-  let x = slider.value() * 5;
+  slider.position(width + 100, 600);
   background(220);
   checkGameState();
   pmx = pmouseX + 46;
   pmy = pmouseY - 38;
-  console.log(squareShow);
 }
 
 function checkGameState() {
@@ -166,9 +189,6 @@ function checkGameState() {
     if (fishVariable === "none") {
       // fishVariable = hardFish[0];
       fishVariable = pickRandomFish();
-    }
-    else if(pickNewFish === "newFish") {
-      fishVariable;
     }
     else { 
       image(fishVariable, 100, 100);
@@ -194,11 +214,10 @@ function checkGameState() {
   if (gameState === "ofishuary") {
     cursor();
     background(220);
-    slider.position(800, 600);
-    let x = slider.value() * 6;
+    let x = slider.value() * -10;
     translate(x, 50);
     rect(0, 200, width, 100);
-
+    
   }
 }
 
@@ -211,7 +230,7 @@ function pickRandomFish() {
     return mediumFish[round(random(0, mediumFish.length - 1))];
   }
   else {
-    return easyFish[round(random(0, easyFish.length - 1))];
+    return easyFish[round(random(0, easyFish.length - 1))];;
   }
 }
 
@@ -228,7 +247,7 @@ function checkRodState() {
     line(pmx, pmy, bobberX, bobberY);
     if (!fishingLineCount) {
       fishingLineCount = frameCount;
-      frameBufferTime = (random(300, 900));
+      frameBufferTime = (random(100, 300));
     }
     if (fishingLineCount + frameBufferTime <= frameCount) {
       gameState = "gameCatching";
@@ -239,26 +258,40 @@ function checkRodState() {
     gameState = "world";
     fishingState = "neutral";
     fishVariable = "none";
+    fishCaught();
   }
   if (fishingState === "lost") {
 
   }
 }
 
+function easyCatch() {
+  
+}
+
+function mediumCatch() {
+
+}
+
+function hardCatch() {
+
+}
 
 function worldOne() {
   background(220);
   fill(75, 175, 250);
   rect(0, waterHeight, width, height);
-  console.log(fishingState);
 }
 
+
 function fishBook() {
-  background(220);
+  if (e === easyFish[("Bob.png")]) {
+    quit();
+  }
 }
 
 function fishCaught() {
-
+  
 }
 
 function fishSeen() {
