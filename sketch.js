@@ -18,24 +18,26 @@
 
 class Fish {
   constructor(name, imageFile, description, rarity) {
-    this.name = name
-    this.imageFile = imageFile
-    this.description = description
-    this.rarity = rarity
-    this.imageX = 0
-    this.imageY = 0
-    this.imageLength = 200
-    this.imageWidth = 200
-    this.fishFound = false
+    this.name = name;
+    this.imageFile = imageFile;
+    this.description = description;
+    this.rarity = rarity;
+    this.imageX = 0;
+    this.imageY = 0;
+    this.imageLength = 200;
+    this.imageWidth = 200;
+    this.fishFound = false;
   }
 
-  displayinBook() {
-    this.fishFound = true;
-    this.description = description
-    
+  displayinBook() {f
+    console.log('This is' ${this.name} ${this.imageFile} ${this.description} ${this.rarity})
+
   }
 
 }
+
+const bobFish = new Fish("Bob", "png", "He is weird", "Common");
+bobFish.displayinBook();
 
 let gridOne =[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
