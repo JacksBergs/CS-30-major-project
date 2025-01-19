@@ -29,8 +29,8 @@ class Fish {
     this.fishFound = false;
   }
 
-  displayinBook() {f
-    console.log('This is' ${this.name} ${this.imageFile} ${this.description} ${this.rarity})
+  displayinBook() {
+    console.log('This is ${this.name} ${this.imageFile} ${this.description} ${this.rarity}')
 
   }
 
@@ -216,9 +216,10 @@ function checkGameState() {
   if (gameState === "ofishuary") {
     cursor();
     background(220);
-    let x = slider.value() * -10;
+    let x = slider.value() * -50;
     translate(x, 50);
-    rect(0, 200, width, 100);
+    fill("brown");
+    rect(0, 200, 6000, 500);
     
   }
 }
