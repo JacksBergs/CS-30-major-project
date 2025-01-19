@@ -15,6 +15,8 @@
 // a constructor defines all the features of my fish, race religion other fish stuff
 // If you do somehting like Bob.display it do the parameter that you have for display
  //newFish = new Fish("bob", "Bob.png", "silly guy", hardFish)
+ //console.log(`This is ${this.name} ${this.imageFile} ${this.description} ${this.rarity}`)
+
 
 class Fish {
   constructor(name, imageFile, description, rarity) {
@@ -22,22 +24,30 @@ class Fish {
     this.imageFile = imageFile;
     this.description = description;
     this.rarity = rarity;
-    this.imageX = 0;
-    this.imageY = 0;
-    this.imageLength = 200;
-    this.imageWidth = 200;
+    this.imageX = 300;
+    this.imageY = 300;
+    this.imageLength = 500;
+    this.imageWidth = 500;
     this.fishFound = false;
   }
 
   displayinBook() {
-    console.log('This is ${this.name} ${this.imageFile} ${this.description} ${this.rarity}')
-
+    if (fishFound) {
+      image(this.imageFile, this.imageX, this.imageY, this.imageWidth, this.imageLength);
+    }
+    // else {
+      
+    // }
   }
 
+  displayInCatching() {
+    image(this.imageFile, this.imageX, this.imageY, this.imageWidth, this.imageLength);
+  }
 }
 
-const bobFish = new Fish("Bob", "png", "He is weird", "Common");
-bobFish.displayinBook();
+// let bobFish = new Fish("Bob", "png", "He is weird", "Common");
+// fishFound = true;
+// bobFish.displayinBook();
 
 let gridOne =[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -97,6 +107,7 @@ let hitDY;
 let easyFish = [];
 let mediumFish = [];
 let hardFish = [];
+let fishArray = [];
 let fishVariable = "none";
 let pickNewFish = "none";
 
@@ -141,7 +152,19 @@ function preload() {
   hardFish.push(loadImage("Broligi.jpg"));
 }
 
+function createFish() {
+  let bobFishy = new Fish("Bob", easyFish, "goober", "");
+  fishArray.push(bobFishy);
+  // let jeremeyFish = new Fish("Jeremy", "Jeremy.png", "goober", "");
+  // fishArray.push(jeremeyFish);
+  let bobHatmanFish = new Fish("BobHatman", mediumFish, "goober", "");
+  fishArray.push(bobHatmanFish);
+  let legendary = new Fish("Broligi", hardFish, "goober", "");
+  fishArray.push(legendary);
+}
+
 function setup() { 
+  createFish();
   worldLevel = createCanvas(1000, 800);
 
   if (windowWidth < windowHeight){
@@ -192,8 +215,8 @@ function checkGameState() {
       // fishVariable = hardFish[0];
       fishVariable = pickRandomFish();
     }
-    else { 
-      image(fishVariable, 100, 100);
+    else {
+      fishVariable.displayInCatching();
     }
     // image(hardFish[0], 100, 100, 500, 500); 
     click = true;
@@ -225,17 +248,31 @@ function checkGameState() {
 }
 
 function pickRandomFish() {
-  let fishPicker = round(random(0, 100));
+  // let fishPicker = round(random(0, 100));
+  // if (fishPicker <= 5) {
+    // return hardFish[round(random(0, hardFish.length - 1))];
+  // }
+  // else if(fishPicker <= 40) {
+    // return mediumFish[round(random(0, mediumFish.length - 1))];
+  // }
+  // else {
+    // return easyFish[round(random(0, easyFish.length - 1))];
+  // }
+
+  let fishPicker = round(random(0, 100))
   if (fishPicker <= 5) {
-    return hardFish[round(random(0, hardFish.length - 1))];
+    return fishArray[easyFish[round(random(0, easyFish.length - 1))]];
   }
-  else if(fishPicker <= 40) {
-    return mediumFish[round(random(0, mediumFish.length - 1))];
+  else if (fishPicker <= 40) {
+    return fishArray[mediumFish[round(random(0, easyFish.length - 1))]];
   }
   else {
-    return easyFish[round(random(0, easyFish.length - 1))];;
+    return fishArray[round(random(0, fishArray.length - 1))];
   }
+  
 }
+
+// array inside of an array???
 
 function checkRodState() {
   if (fishingState === "charging") {
