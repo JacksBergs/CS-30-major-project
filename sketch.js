@@ -1,21 +1,5 @@
 //Fishing Game
-// Maybe make a new canvas
-// https://p5js.org/reference/p5/textFont/
-// Have to click in between a certain area
-// Rectangle changes colour when you hover over it
-// If hide cursor equals true, put cursor at the top right
-// p5.touchgui
-// mouseButton
-// make a state machine with a state variable
-// create a second screen(canvas) but for "hotbar"
-// Make a pElement, create a label and such anywhere on the screen
-// Once you catch the fish you add it to a list, then that list will be used for the book and if its blurred
-// Make a class to show fish in ofishuary
-// Create a class of fish, basically the whole class will include a characters rarity, its name, its image type, whether or not they are found
-// a constructor defines all the features of my fish, race religion other fish stuff
-// If you do somehting like Bob.display it do the parameter that you have for display
- //newFish = new Fish("bob", "Bob.png", "silly guy", hardFish)
- //console.log(`This is ${this.name} ${this.imageFile} ${this.description} ${this.rarity}`)
+
 
 
 class Fish {
@@ -36,9 +20,6 @@ class Fish {
       imageMode(CORNER);
       image(this.imageFile, this.imageX, this.imageY, this.imageWidth, this.imageLength);
     }
-    // else {
-      
-    // }
   }
 
   displayInCatching() {
@@ -77,6 +58,14 @@ let playerSquare = {
 let enemySquare = {
   x: 0,
   y: 0,
+};
+
+let theHandArray = [];
+
+let theHand = {
+  x: 200,
+  y: 300,
+  dy: 3,
 };
 
 let cellSize;
@@ -143,26 +132,37 @@ let frameBufferTime;
 let startButton;
 let ofishuaryBook;
 
+theHandArray.push(theHand);
+
 function preload() {
   // When the rod is neutral
   rodImageNormal = loadImage("Rod.png");
   handNormal = loadImage("Hand.png");
   handHitting = loadImage("HitHand.png");
-  easyFish = loadImage("Bob.png");
-  // easyFish = loadImage("Jeremy.png");
-  mediumFish = loadImage("BobHatman.png");
-  hardFish = loadImage("Broligi.jpg");
+  bobFishImage = loadImage("Bob.png");
+  jeremyImage = loadImage("Jeremy.png");
+  bobHatmanImage = loadImage("BobHatman.png");
+  BroligiImage = loadImage("Broligi.jpg");
 }
 
 function createFish() {
-  let bobFishy = new Fish("Bob", easyFish, "goober", "", 0, 0);
-  fishArray.push(bobFishy);
-  // let jeremeyFish = new Fish("Jeremy", "Jeremy.png", "goober", "");
-  // fishArray.push(jeremeyFish);
-  let bobHatmanFish = new Fish("BobHatman", mediumFish, "goober", "", 0, 250);
-  fishArray.push(bobHatmanFish);
-  let legendary = new Fish("Broligi", hardFish, "goober", "", 250, 0);
-  fishArray.push(legendary);
+  let bobFishy = new Fish("Bob", bobFishImage, "goober", "Common", 0, 0);
+  easyFish.push(bobFishy);
+  let jeremeyFish = new Fish("Jeremy", jeremyImage, "goober", "");
+  easyFish.push(jeremeyFish);
+  let bobHatmanFish = new Fish("BobHatman", bobHatmanImage, "goober", "", 0, 250);
+  mediumFish.push(bobHatmanFish);
+  let legendary = new Fish("Broligi", BroligiImage, "goober", "", 250, 0);
+  hardFish.push(legendary);
+  for (let fish of easyFish) {
+    fishArray.push[fish];
+  }
+  for (let fish of mediumFish) {
+    fishArray.push[fish];
+  }
+  for (let fish of hardFish) {
+    fishArray.push[fish];
+  }
 }
 
 function setup() { 
@@ -218,12 +218,13 @@ function checkGameState() {
       fishVariable = pickRandomFish();
     }
     else {
+      console.log(fishVariable);
       fishVariable.displayInCatching();
     }
     // image(hardFish[0], 100, 100, 500, 500); 
     click = true;
     if (click === true){
-      image(handNormal, 100, 100);
+      hitHand();
       // Spawns in the player
       gridOne[playerSquare.y][playerSquare.x] = PLAYER_TILE;
       gridOne[enemySquare.y][enemySquare.x] = ENEMY_TILE;
@@ -245,25 +246,31 @@ function checkGameState() {
     translate(x, 50);
     fill("brown");
     rect(0, 200, 6000, 500);
-    for (let fishy of fishArray) {
-      fishy.displayinBook();
+    for (let fish of easyFish) {
+      fish.displayinBook();
+    } 
+    for (let fish of mediumFish) {
+      fish.displayinBook();
+    } 
+    for (let fish of hardFish) {
+      fish.displayinBook();
     } 
   }
 }
 
 function pickRandomFish() {
-  // let fishPicker = round(random(0, 100));
-  // if (fishPicker <= 5) {
-    // return hardFish[round(random(0, hardFish.length - 1))];
-  // }
-  // else if(fishPicker <= 40) {
-    // return mediumFish[round(random(0, mediumFish.length - 1))];
-  // }
-  // else {
-    // return easyFish[round(random(0, easyFish.length - 1))];
-  // }
+  let fishPicker = round(random(0, 100));
+  if (fishPicker <= 5) {
+    return hardFish[round(random(0, hardFish.length - 1))];
+  }
+  else if(fishPicker <= 40) {
+    return mediumFish[round(random(0, mediumFish.length - 1))];
+  }
+  else {
+    return easyFish[round(random(0, easyFish.length - 1))];
+  }
 
-  return fishArray[round(random(0, fishArray.length - 1))];
+  // return fishArray[round(random(0, fishArray.length - 1))];
   
 }
 
@@ -296,30 +303,17 @@ function checkRodState() {
     fishVariable = "none";
   }
   if (fishingState === "lost") {
-
+    gameState = "world";
+    fishingState = "neutral";
+    fishVariable.fishFound = false;
+    fishVariable = "none";
   }
-}
-
-function easyCatch() {
-  
-}
-
-function mediumCatch() {
-
-}
-
-function hardCatch() {
-
 }
 
 function worldOne() {
   background(220);
   fill(75, 175, 250);
   rect(0, waterHeight, width, height);
-}
-
-function fishSeen() {
-
 }
 
 function catchingFish() {
@@ -471,17 +465,23 @@ function showRod(){
 }
 
 function hitHand() {
-  // hitW = 300;
-  // hitH = 200;
-  // hitDY = 1; 
-  // image(handHitting, hitW, hitH);
-  // someHit -= hitDY;
-  // if (hitH >= 100) {
-  //   hitDY *= 1;
-  // }
-  // else if(hitH <= 200){
-  //   hitDY *= -1;
-  // }
+  for (let someHand of theHandArray) {
+    someHand.y += someHand.dy;
+    if (someHand.y > 400 || someHand.y < 200){
+      someHand.dy *= -1;
+    }
+    image(handNormal, 300, someHand.y);
+  }
+}
+
+function fishPunch() {
+  for (let someHand of theHandArray) {
+    someHand.y += someHand.dy;
+    if (someHand.y > height || someHand.y < 0){
+      someHand.dy *= -1;
+    }
+    image(handHitting, 100, someHand.y);
+  }
 }
 
 function autoMoveEnemy() {
@@ -499,9 +499,13 @@ function autoMoveEnemy() {
       barCounter = 0;
     }
   }
+  // else if(enemySquare.y >= 4) {
+  //   fishingState = "lost";
+  // }
   if (fishingState !== "caught") {
     if (frameCount % tickRate === 0){
       if (enemySquare.y >= 4){
+        hitHand();
         tickRate -= 5;
         gridOne[enemySquare.y][enemySquare.x] = OPEN_TILE;
         enemySquare.y = 0;
