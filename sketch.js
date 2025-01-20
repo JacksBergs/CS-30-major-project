@@ -123,7 +123,7 @@ let slider;
 let theTest;
 
 let click = false;
-let timer = 500; // going to do it in millis
+let timer = 0; // going to do it in millis
 let tickRate = 50;
 let barCounter = 0;
 
@@ -131,6 +131,8 @@ let fishingLineCount;
 let frameBufferTime;
 let startButton;
 let ofishuaryBook;
+
+let hitCounter = 0;
 
 theHandArray.push(theHand);
 
@@ -218,10 +220,8 @@ function checkGameState() {
       fishVariable = pickRandomFish();
     }
     else {
-      console.log(fishVariable);
       fishVariable.displayInCatching();
     }
-    // image(hardFish[0], 100, 100, 500, 500); 
     click = true;
     if (click === true){
       hitHand();
@@ -236,7 +236,8 @@ function checkGameState() {
       // Shows the frames counting up text
       fill("black");
       textSize(30);
-      text(frameCount, 800, 100);
+      timer = frameCount;
+      text(timer, 800, 100);
     }
   }
   if (gameState === "ofishuary") {
@@ -274,7 +275,6 @@ function pickRandomFish() {
   
 }
 
-// array inside of an array???
 
 function checkRodState() {
   if (fishingState === "charging") {
@@ -305,7 +305,7 @@ function checkRodState() {
   if (fishingState === "lost") {
     gameState = "world";
     fishingState = "neutral";
-    fishVariable.fishFound = false;
+    fishVariable.fishFound = true;
     fishVariable = "none";
   }
 }
@@ -322,7 +322,6 @@ function catchingFish() {
 
 function mousePressed() {
   if (mouseX >= 1100 && mouseX <= 1200 && mouseY >= 0 && mouseY <= 25 && gameState === "menu"){
-    // gameState = "world";
     gameState = "world";
   }
   if (fishingState === "neutral"){
@@ -465,38 +464,38 @@ function showRod(){
 }
 
 function hitHand() {
-  for (let someHand of theHandArray) {
-    someHand.y += someHand.dy;
-    if (someHand.y > 400 || someHand.y < 200){
-      someHand.dy *= -1;
-    }
-    image(handNormal, 300, someHand.y);
+  if (mouseIsPressed) {
+    hitCounter++;
+    image(handHitting, pmx, pmy, 100, 100);
+  }
+  else {
+    image(handNormal, pmx, pmy, 100, 100);
   }
 }
 
 function fishPunch() {
-  for (let someHand of theHandArray) {
-    someHand.y += someHand.dy;
-    if (someHand.y > height || someHand.y < 0){
-      someHand.dy *= -1;
-    }
-    image(handHitting, 100, someHand.y);
-  }
+  // for (let someHand of theHandArray) {
+  //   someHand.y += someHand.dy;
+  //   if (someHand.y > height || someHand.y < 0){
+  //     someHand.dy *= -1;
+  //   }
+  //   image(handHitting, 100, someHand.y);
+  // }
 }
 
 function autoMoveEnemy() {
   // This is the losing screen
   // if the tickRate = 0, it goes as fast as it orignially does
   if (playerSquare.x === enemySquare.x && playerSquare.y === enemySquare.y + 1){
-    hitHand();
     gridOne[enemySquare.y][enemySquare.x] = OPEN_TILE;
     enemySquare.y = 0;
     enemySquare.x = round(random(0, 9));
     barCounter++;
-    if (barCounter === 5) {
+    if (barCounter >= 5 && hitCounter >= 50) {
       fishingState = "caught";
       checkRodState();
       barCounter = 0;
+      hitCounter = 0;
     }
   }
   // else if(enemySquare.y >= 4) {
@@ -505,12 +504,15 @@ function autoMoveEnemy() {
   if (fishingState !== "caught") {
     if (frameCount % tickRate === 0){
       if (enemySquare.y >= 4){
-        hitHand();
-        tickRate -= 5;
+        // gridOne[enemySquare.y][enemySquare.x] = OPEN_TILE;
+        // enemySquare.y = 0;
+        // enemySquare.x = round(random(0, 9));
+        // enemyMove(enemySquare.x, enemySquare.y);
+        fishingState = "lost";
+        checkRodState();
         gridOne[enemySquare.y][enemySquare.x] = OPEN_TILE;
         enemySquare.y = 0;
         enemySquare.x = round(random(0, 9));
-        enemyMove(enemySquare.x, enemySquare.y);
       }
       else if (enemySquare.y <= 3){
         enemyMove(enemySquare.x, enemySquare.y + 1);
@@ -518,10 +520,12 @@ function autoMoveEnemy() {
     }
     if (tickRate === 0) {
       if (enemySquare.y >= 4){
-        gridOne[enemySquare.y][enemySquare.x] = OPEN_TILE;
-        enemySquare.y = 0;
-        enemySquare.x = round(random(0, 9));
-        enemyMove(enemySquare.x, enemySquare.y);
+        // gridOne[enemySquare.y][enemySquare.x] = OPEN_TILE;
+        // enemySquare.y = 0;
+        // enemySquare.x = round(random(0, 9));
+        // enemyMove(enemySquare.x, enemySquare.y);
+        fishingState = "lost";
+        checkRodState();
       }
       else if (enemySquare.y <= 3){
         enemyMove(enemySquare.x, enemySquare.y + 1);
