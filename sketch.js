@@ -19,20 +19,21 @@
 
 
 class Fish {
-  constructor(name, imageFile, description, rarity) {
+  constructor(name, imageFile, description, rarity, imageX, imageY) {
     this.name = name;
     this.imageFile = imageFile;
     this.description = description;
     this.rarity = rarity;
-    this.imageX = 300;
-    this.imageY = 300;
-    this.imageLength = 500;
-    this.imageWidth = 500;
+    this.imageX = imageX;
+    this.imageY = imageY + 200;
+    this.imageLength = 250;
+    this.imageWidth = 250;
     this.fishFound = false;
   }
 
   displayinBook() {
-    if (fishFound) {
+    if (this.fishFound) {
+      imageMode(CORNER);
       image(this.imageFile, this.imageX, this.imageY, this.imageWidth, this.imageLength);
     }
     // else {
@@ -41,8 +42,9 @@ class Fish {
   }
 
   displayInCatching() {
-    image(this.imageFile, this.imageX, this.imageY, this.imageWidth, this.imageLength);
+    image(this.imageFile, this.imageWidth, this.imageLength);
   }
+
 }
 
 // let bobFish = new Fish("Bob", "png", "He is weird", "Common");
@@ -146,20 +148,20 @@ function preload() {
   rodImageNormal = loadImage("Rod.png");
   handNormal = loadImage("Hand.png");
   handHitting = loadImage("HitHand.png");
-  easyFish.push(loadImage("Bob.png"));
-  easyFish.push(loadImage("Jeremy.png"));
-  mediumFish.push(loadImage("BobHatman.png"));
-  hardFish.push(loadImage("Broligi.jpg"));
+  easyFish = loadImage("Bob.png");
+  // easyFish = loadImage("Jeremy.png");
+  mediumFish = loadImage("BobHatman.png");
+  hardFish = loadImage("Broligi.jpg");
 }
 
 function createFish() {
-  let bobFishy = new Fish("Bob", easyFish, "goober", "");
+  let bobFishy = new Fish("Bob", easyFish, "goober", "", 0, 0);
   fishArray.push(bobFishy);
   // let jeremeyFish = new Fish("Jeremy", "Jeremy.png", "goober", "");
   // fishArray.push(jeremeyFish);
-  let bobHatmanFish = new Fish("BobHatman", mediumFish, "goober", "");
+  let bobHatmanFish = new Fish("BobHatman", mediumFish, "goober", "", 0, 250);
   fishArray.push(bobHatmanFish);
-  let legendary = new Fish("Broligi", hardFish, "goober", "");
+  let legendary = new Fish("Broligi", hardFish, "goober", "", 250, 0);
   fishArray.push(legendary);
 }
 
@@ -243,7 +245,9 @@ function checkGameState() {
     translate(x, 50);
     fill("brown");
     rect(0, 200, 6000, 500);
-    
+    for (let fishy of fishArray) {
+      fishy.displayinBook();
+    } 
   }
 }
 
@@ -259,16 +263,7 @@ function pickRandomFish() {
     // return easyFish[round(random(0, easyFish.length - 1))];
   // }
 
-  let fishPicker = round(random(0, 100))
-  if (fishPicker <= 5) {
-    return fishArray[easyFish[round(random(0, easyFish.length - 1))]];
-  }
-  else if (fishPicker <= 40) {
-    return fishArray[mediumFish[round(random(0, easyFish.length - 1))]];
-  }
-  else {
-    return fishArray[round(random(0, fishArray.length - 1))];
-  }
+  return fishArray[round(random(0, fishArray.length - 1))];
   
 }
 
@@ -297,8 +292,8 @@ function checkRodState() {
   if (fishingState === "caught"){
     gameState = "world";
     fishingState = "neutral";
+    fishVariable.fishFound = true;
     fishVariable = "none";
-    fishCaught();
   }
   if (fishingState === "lost") {
 
@@ -321,17 +316,6 @@ function worldOne() {
   background(220);
   fill(75, 175, 250);
   rect(0, waterHeight, width, height);
-}
-
-
-function fishBook() {
-  if (e === easyFish[("Bob.png")]) {
-    quit();
-  }
-}
-
-function fishCaught() {
-  
 }
 
 function fishSeen() {
